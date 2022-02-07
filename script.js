@@ -45,12 +45,11 @@ const colocarprodutos = async () => {
     const listaDeProdutos = produtoAColocar.results;
     const intemsPai = document.querySelector('.items');
     listaDeProdutos.forEach((item) => {
-    const { id, title, thumbnail } = item;
-        const objProdutos = {
-          sku: id,
-          name: title,
-          image: thumbnail,
-        };
+      const sku = item.id;
+      const name = item.title;
+      const image = item.thumbnail;
+      const objProdutos = { sku, name, image };
+      
     intemsPai.appendChild(createProductItemElement(objProdutos));
 });
 };
