@@ -3,7 +3,7 @@ function createProductImageElement(imageSource) {
   img.className = 'item__image';
   img.src = imageSource;
   return img;
-} 
+}
 
 function createCustomElement(element, className, innerText) {
   const e = document.createElement(element);
@@ -24,22 +24,36 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
+// function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
-function cartItemClickListener(event) {
-  // coloque seu código aqui
-}
+// function cartItemClickListener(event) {
+//   // coloque seu código aqui
+// }
 
-function createCartItemElement({ sku, name, salePrice }) {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-}
+// function createCartItemElement({ sku, name, salePrice }) {
+//   const li = document.createElement('li');
+//   li.className = 'cart__item';
+//   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+//   li.addEventListener('click', cartItemClickListener);
+//   return li;
+// }
 
-window.onload = () => {
-  
- };
+const colocarprodutos = async () => {
+    const produtoAColocar = await fetchProducts('computador');
+    const listaDeProdutos = produtoAColocar.results;
+    const intemsPai = document.querySelector('.items');
+    listaDeProdutos.forEach((item) => {
+    const { id, title, thumbnail } = item;
+        const objProdutos = {
+          sku: id,
+          name: title,
+          image: thumbnail,
+        };
+    intemsPai.appendChild(createProductItemElement(objProdutos));
+});
+};
+
+colocarprodutos();
+window.onload = () => { };
