@@ -29,30 +29,47 @@ function createProductItemElement({ sku, name, image }) {
 // }
 
 // function cartItemClickListener(event) {
-//   // coloque seu código aqui
+ 
 // }
 
-// function createCartItemElement({ sku, name, salePrice }) {
-//   const li = document.createElement('li');
-//   li.className = 'cart__item';
-//   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
-//   li.addEventListener('click', cartItemClickListener);
-//   return li;
-// }
+function createCartItemElement({ sku, name, salePrice }) {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+}
 
 const colocarProdutos = async () => {
     const produtosAColocar = await fetchProducts('computador');
     const listaDeProdutos = produtosAColocar.results;
-    const intenPai = document.querySelector('.items');
+    const itemPai = document.querySelector('.items');
     listaDeProdutos.forEach((item) => {
       const sku = item.id;
       const name = item.title;
       const image = item.thumbnail;
       const objProdutos = { sku, name, image };      
-    intenPai.appendChild(createProductItemElement(objProdutos));
+    itemPai.appendChild(createProductItemElement(objProdutos));
 });
 };
+const addToCart = async () => {
+  const itemPai = document.querySelectorAll('.item');
+  const cart = document.querySelector('.cart__items');
+  itemPai.forEach((item) => {
+    const btn = item.querySelector('.item__add');
+    const id = item.querySelector('.item__sku').innerText;
+    btn.addEventListener('click', async () => {
+      const inform = await fetchItem(id);
+      const sku = inform.id;
+      const name = inform.title;
+      const salePrice = Number(inform.price);
+      const objProdutos = { sku, name, salePrice };
+      cart.appendChild(createCartItemElement(objProdutos));
+    });
+  });
+};
 
-window.onload = () => {
-colocarProdutos();
- };
+window.onload = async () => {
+  await colocarProdutos();
+  await addToCart();
+};
