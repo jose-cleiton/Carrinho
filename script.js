@@ -45,7 +45,6 @@ const addToCart = async () => {
   });
 };
 
-
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
   section.className = 'item';
@@ -57,18 +56,14 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
- function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
-}
-
-
+//  function getSkuFromProductItem(item) {
+//   return item.querySelector('span.item__sku').innerText;
+// }
 
 removeCart.addEventListener('click', () => {
   cart.innerHTML = '';
   localStorage.removeItem('cartItems');
 });
-
-
 
 const colocarProdutos = async () => {
     const produtosAColocar = await fetchProducts('computador');
@@ -83,16 +78,13 @@ const colocarProdutos = async () => {
 });
 };
 
-
 const apagaItemCarrinho = () => {
   for (let i = 0; i < itemLi.length; i += 1) {
     itemLi[i].addEventListener('click', cartItemClickListener);
   }
-  
 };
   cart.innerHTML = '';
 window.onload = async () => {
-  
   await colocarProdutos();
   await addToCart();
   await getSavedCartItems();
