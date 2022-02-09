@@ -64,7 +64,7 @@ const colocarProdutos = async () => {
 };
 const addToCart = async () => {
   const itemPai = document.querySelectorAll('.item');
-   itemPai.forEach((item) => {
+  itemPai.forEach((item) => {
     const btn = item.querySelector('.item__add');
     const id = item.querySelector('.item__sku').innerText;
     btn.addEventListener('click', async () => {
@@ -80,7 +80,9 @@ const addToCart = async () => {
 };
 
 const atualizaAPagina = () => {
-  itemLi.forEach((element) => element.addEventListener('click', cartItemClickListener));
+  for (let i = 0; i < itemLi.length; i += 1) {
+    itemLi[i].addEventListener('click', cartItemClickListener);
+  }
 };
 
 window.onload = async () => {
