@@ -80,7 +80,7 @@ const colocarProdutos = async () => {
 
 const apagaItemCarrinho = () => {
   for (let i = 0; i < itemLi.length; i += 1) {
-    itemLi[i].addEventListener('click', cartItemClickListener);
+    itemLi[i].addEventListener('click', (event) => cartItemClickListener(event));
   }
 };
   cart.innerHTML = '';
