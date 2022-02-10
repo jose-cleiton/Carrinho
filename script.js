@@ -28,7 +28,7 @@ function createProductItemElement({ sku, name, image }) {
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
   section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
+    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!')
   );
 
   return section;
@@ -43,7 +43,7 @@ function createCartItemElement({ sku, name, salePrice }) {
 //  function getSkuFromProductItem(item) {
 //   return item.querySelector('span.item__sku').innerText;
 // }
-/** --------------------------------------------------------------------- */
+/**--------------------------------------------------------------------- */
 const addToCart = async () => {
   const itemPai = document.querySelectorAll('.item');
   itemPai.forEach((item) => {
@@ -51,19 +51,14 @@ const addToCart = async () => {
     const id = item.querySelector('.item__sku').innerText;
     btn.addEventListener('click', async () => {
       const inform = await fetchItem(id);
-      cart.appendChild(
-        createCartItemElement({
-          ske: inform.id,
-          name: inform.title,
-          salePrice: Number(inform.price),
-        }),
-      );
+      cart.appendChild(createCartItemElement({ske: inform.id, name: inform.title, salePrice: Number(inform.price)}));
       saveCartItems(cart.innerHTML);
     });
   });
 };
 removeCart.addEventListener('click', () =>
-  localStorage.removeItem('cartItems'));
+  localStorage.removeItem('cartItems')
+);
 
 const colocarProdutos = async () => {
   const produtosAColocar = await fetchProducts('computador');
@@ -74,14 +69,16 @@ const colocarProdutos = async () => {
         sku: item.id,
         name: item.title,
         image: item.thumbnail,
-      }),
-    ));
+      })
+    )
+  );
 };
 
 const apagaItemCarrinho = () => {
   for (let i = 0; i < itemLi.length; i += 1) {
     itemLi[i].addEventListener('click', (event) =>
-      cartItemClickListener(event));
+      cartItemClickListener(event)
+    );
   }
 };
 cart.innerHTML = '';
