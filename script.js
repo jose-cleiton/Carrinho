@@ -1,5 +1,9 @@
 const cartItems = document.querySelector('.cart__items');
 const removeCart = document.querySelector('.empty-cart');
+const item = document.querySelector('.items');
+const sectionCarregando = document.createElement('section');
+sectionCarregando.className = 'loading';
+item.appendChild(sectionCarregando);
 const itemLi = document.getElementsByClassName('cart__item');
 const cart = document.querySelector('.cart');
 const sectionTotal = document.createElement('section');
@@ -58,9 +62,9 @@ function createCartItemElement({ sku, name, salePrice }) {
 
 const addToCart = async () => {
   const listaDeItems = document.querySelectorAll('.item');
-  listaDeItems.forEach((item) => {
-    const btn = item.querySelector('.item__add');
-    const id = item.querySelector('.item__sku').innerText;
+  listaDeItems.forEach((itemAtual) => {
+    const btn = itemAtual.querySelector('.item__add');
+    const id = itemAtual.querySelector('.item__sku').innerText;
     btn.addEventListener('click', async () => {
       const inform = await fetchItem(id);
       const sku = inform.id;
@@ -81,12 +85,12 @@ removeCart.addEventListener('click', () => {
 });
 
 const colocarProdutos = async () => {
-    const produtosAColocar = await fetchProducts('computador');
+  const produtosAColocar = await fetchProducts('computador');
     const itemPai = document.querySelector('.items');
 
-  produtosAColocar.forEach((item) =>
+  produtosAColocar.forEach((prod) =>
       itemPai.appendChild(
-        createProductItemElement({ sku: item.id, name: item.title, image: item.thumbnail }),
+        createProductItemElement({ sku: prod.id, name: prod.title, image: prod.thumbnail }),
 ));
 };
 
@@ -100,7 +104,9 @@ const apagaItemCarrinho = () => {
 
   cartItems.innerHTML = '';
 window.onload = async () => {
+  sectionCarregando.innerText = 'carregando...'; 
   await colocarProdutos();
+  sectionCarregando.remove();
   await addToCart();
   await getSavedCartItems();
   cartItems.innerHTML = getSavedCartItems();
