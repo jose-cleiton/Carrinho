@@ -1,6 +1,20 @@
-const cart = document.querySelector('.cart__items');
+const cartItems = document.querySelector('.cart__items');
 const removeCart = document.querySelector('.empty-cart');
 const itemLi = document.getElementsByClassName('cart__item');
+const cart = document.querySelector('.cart');
+const sectionTotal = document.createElement('section');
+sectionTotal.className = 'total-price';
+cart.appendChild(sectionTotal);
+const somarPreco = () => {
+  const itemCarrinho = document.querySelectorAll('.cart__item');
+  let total = 0;
+  itemCarrinho.forEach((prod) => {
+    const posicao = (prod.innerText.indexOf('| PRICE: $')) + 10;
+    total += Number((prod.innerText.substr(posicao)));
+  });
+
+  return total;
+};
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -17,7 +31,8 @@ function createCustomElement(element, className, innerText) {
 }
 function cartItemClickListener(event) {
   event.target.remove();
-  saveCartItems(cart.innerHTML);
+  saveCartItems(cartItems.innerHTML);
+  sectionTotal.innerText = somarPreco();
 }
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
@@ -40,9 +55,10 @@ function createCartItemElement({ sku, name, salePrice }) {
 //   return item.querySelector('span.item__sku').innerText;
 // }
 /** --------------------------------------------------------------------- */
+
 const addToCart = async () => {
-  const itemPai = document.querySelectorAll('.item');
-  itemPai.forEach((item) => {
+  const listaDeItems = document.querySelectorAll('.item');
+  listaDeItems.forEach((item) => {
     const btn = item.querySelector('.item__add');
     const id = item.querySelector('.item__sku').innerText;
     btn.addEventListener('click', async () => {
@@ -51,14 +67,16 @@ const addToCart = async () => {
       const name = inform.title;
       const salePrice = Number(inform.price);
       const objProdutos = { sku, name, salePrice };
-      cart.appendChild(createCartItemElement(objProdutos));
-      saveCartItems(cart.innerHTML);      
+      cartItems.appendChild(createCartItemElement(objProdutos));
+      sectionTotal.innerText = somarPreco();
+      
+      saveCartItems(cartItems.innerHTML);      
     });
   });
 };
 
 removeCart.addEventListener('click', () => {
-  cart.innerHTML = '';
+  cartItems.innerHTML = '';
   localStorage.removeItem('cartItems');
 });
 
@@ -74,14 +92,18 @@ const colocarProdutos = async () => {
 
 const apagaItemCarrinho = () => {
   for (let i = 0; i < itemLi.length; i += 1) {
-    itemLi[i].addEventListener('click', (event) => cartItemClickListener(event));
+    itemLi[i].addEventListener('click', (event) => {
+      cartItemClickListener(event);
+    });
   }
 };
-  cart.innerHTML = '';
+
+  cartItems.innerHTML = '';
 window.onload = async () => {
   await colocarProdutos();
   await addToCart();
   await getSavedCartItems();
-  cart.innerHTML = getSavedCartItems();
+  cartItems.innerHTML = getSavedCartItems();
   await apagaItemCarrinho();
+  sectionTotal.innerText = somarPreco();
 };
